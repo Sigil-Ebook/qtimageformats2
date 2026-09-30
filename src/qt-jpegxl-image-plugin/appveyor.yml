@@ -1,0 +1,46 @@
+version: 0.8.4.{build}
+image: Visual Studio 2022
+environment:
+  CC: cl.exe
+  CXX: cl.exe
+install:
+- cmd: >-
+    call "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvars64.bat"
+
+    git clone --depth 1 -b v0.12.x https://github.com/libjxl/libjxl.git --recursive --shallow-submodules
+
+    cd libjxl
+
+    mkdir build
+
+    cd build
+
+    cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF -DBUILD_TESTING=OFF -DJPEGXL_ENABLE_TOOLS=OFF -DJPEGXL_ENABLE_DOXYGEN=OFF -DJPEGXL_ENABLE_MANPAGES=OFF -DJPEGXL_ENABLE_BENCHMARK=OFF -DJPEGXL_ENABLE_EXAMPLES=OFF -DJPEGXL_ENABLE_SJPEG=OFF -DJPEGXL_ENABLE_SKCMS=ON -DJPEGXL_WARNINGS_AS_ERRORS=OFF -DCMAKE_C_FLAGS="-DJXL_STATIC_DEFINE -DJXL_THREADS_STATIC_DEFINE -DJXL_CMS_STATIC_DEFINE" -DCMAKE_CXX_FLAGS="-DJXL_STATIC_DEFINE -DJXL_THREADS_STATIC_DEFINE -DJXL_CMS_STATIC_DEFINE" ..
+
+    ninja jxl jxl_cms jxl_threads hwy brotlicommon brotlidec brotlienc
+
+    cd ..\..
+build_script:
+- cmd: >-
+    cd qtbuild_6.5.3
+
+    C:\Qt\6.5.3\msvc2019_64\bin\qmake.exe qt-jpegxl-image-plugin_alternative_appveyor.pro
+
+    nmake
+
+    cd ..\qtbuild_6.8.3
+
+    C:\Qt\6.8.3\msvc2022_64\bin\qmake.exe qt-jpegxl-image-plugin_alternative_appveyor.pro
+
+    nmake
+
+    cd ..\qtbuild_6.9.3
+
+    C:\Qt\6.9.3\msvc2022_64\bin\qmake.exe qt-jpegxl-image-plugin_alternative_appveyor.pro
+
+    nmake
+
+artifacts:
+- path: qtbuild_6.5.3\*.dll
+- path: qtbuild_6.8.3\*.dll
+- path: qtbuild_6.9.3\*.dll
