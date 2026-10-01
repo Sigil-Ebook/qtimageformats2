@@ -37,7 +37,22 @@ or alternative the build works with Ninja instead of Unix Makefiles as well.
 Notice the -DCMAKE_IGNORE_PREFIX are set to exclude /usr/lib and /usr/local/lib
 to force pure static versions of all libraries and not shared versions
 based on existing libjxl, libaom, libyuv, and libavif since these are
-meant for stabdalone qt6 image plugin.
+meant for standalone qt6 image plugin.
 
-Also note, there are a hude number of warnings when building libjxl and its
+Also note, there are a huge number of warnings when building libjxl and its
 sub libraries.  These were not introduced by us at all.
+
+For MacOS: - first make sure the Qt bin directory can be found
+
+export PATH=${PATH}:/Users/kbhend/Qt6102/bin
+
+cmake -G "Unix Makefiles" -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=Release
+    -DCONFIG_PIC=1 -DCMAKE_POSITION_INDEPENDENT_CODE=ON
+    -DCMAKE_IGNORE_PREFIX_PATH=/opt/local -DCMAKE_IGNORE_PREFIX_PATH=/usr/local
+    -DAVIF_CODEC_AOM=SYSTEM -DAVIF_LIBYUV=SYSTEM ../qtimageformats2
+
+Notice the -DCMAKE_IGNORE_PREFIX_PATH=/opt/local and -DCMAKE_IGNORE_PREFIX_PATH=/usr/local
+which are used to turn off where any non-MacOS libs might have been installed
+
+
+
