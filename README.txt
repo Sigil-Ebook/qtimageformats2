@@ -24,7 +24,7 @@ so that a single cmake command will build qt-avif-image-plugin and
 qt-jpegxl-image-plugin statically linked to their dependencies.
 The build is designed to work on Linux, MacOS and Windows.
 
-Note tha the warious subprojects have had their CMakeLists.txt files modified
+Note that the various subprojects have had their CMakeLists.txt files modified
 to make things work together so diff each 3rdparty lib against the current
 contents to see the CMakeLists.txt changes needed if trying to use newer versions.
 The qmake .pro files in the two plugins have also been converted to CMakeLists.txt
@@ -64,6 +64,6 @@ cmake -G "Unix Makefiles" -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=Release
 Notice the -DCMAKE_IGNORE_PREFIX_PATH=/opt/local and -DCMAKE_IGNORE_PREFIX_PATH=/usr/local
 which are used to turn off where any non-MacOS libs might have been installed
 
-For Windows:  add in perl and use Ninja as the target following keep the pertinent
+For Windows:  add in perl and use Ninja as the target and keep all the pertinent
 defines from the Linux make command.
 
