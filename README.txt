@@ -1,6 +1,6 @@
 Repo: qtimageformats2
 
-The Epub3.4 spec now allows for jpegxl (jx) and avif image formats
+The Epub3.4 spec now allows for jpegxl (jxl) and avif image formats
 to be base media types that do not require fallbacks.
 
 Unfortunately Qt6 does not support these formats either at the qtbase module
