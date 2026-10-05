@@ -14,7 +14,7 @@ Windows, MacOS, and as an AppImage for Linux.
 This repo merges the following 6 code repositories:
     https://github.com/aomediacodec/libavif
     https://github.com/lemenkov/libyuv
-    https://github.com/mozilla/aom
+    https://aomedia.googlesource.com/aom
     https://github.com/libjxl/libjxl (and all its dependencies)
     https://github.com/novomesk/qt-avif-image-plugin
     https://github.com/novomesk/qt-jpegxl-image-plugin
