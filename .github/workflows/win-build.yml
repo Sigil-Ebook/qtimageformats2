@@ -16,6 +16,7 @@ on:
 
 env:
   BUILD_TYPE: Release
+  PYTHON: \hostedtoolcache\windows\Python\3.14.2\x64
   QT: 6.10.2
 
 jobs:
@@ -25,6 +26,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v6
+
+    - name: Set up Python 3.14.2
+      uses: actions/setup-python@v6
+      with:
+        python-version: 3.14.2
   
     - name: Cache Qt
       id: cache-qt
@@ -36,7 +42,7 @@ jobs:
     - name: Install Qt
       uses: jurplel/install-qt-action@v4
       with:
-        version: '{env.QT}'
+        version: '${{env.QT}}'
         dir: ${{runner.workspace}}/Qt
         setup-python: 'false'
         archives: 'qtbase'
@@ -50,6 +56,7 @@ jobs:
         mkdir ${{runner.workspace}}\build
         cd ${{runner.workspace}}\build
         qmake -v
+        python --version
 
     - name: Build
       shell: cmd
