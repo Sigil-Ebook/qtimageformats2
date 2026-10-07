@@ -1,0 +1,82 @@
+name: Build qtimageformats on Windows
+
+on:
+
+  workflow_dispatch:
+  
+  push:
+    branches: [ master ]
+    tags-ignore:
+      - '**'
+
+  pull_request:
+    branches: [ master ]
+    tags-ignore:
+      - '**'
+
+env:
+  BUILD_TYPE: Release
+  QT: 6.10.2
+
+jobs:
+  build:
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    runs-on: windows-2025-vs2026
+
+    steps:
+    - uses: actions/checkout@v6
+  
+    - name: Cache Qt
+      id: cache-qt
+      uses: actions/cache@v4
+      with:
+        path: ${{runner.workspace}}/Qt
+        key: ${{ runner.os }}-qttools-${{ hashFiles('**/reset-caches.txt') }}
+  
+    - name: Install Qt
+      uses: jurplel/install-qt-action@v4
+      with:
+        version: '{env.QT}'
+        dir: ${{runner.workspace}}/Qt
+        setup-python: 'false'
+        archives: 'qtbase'
+        cache: ${{ steps.cache-qt.outputs.cache-hit }}
+
+    - name: Create Build Environment
+      shell: cmd
+      run: |
+        set PATH=${{runner.workspace}}\%QT%\bin;%PATH%
+        echo ${{runner.workspace}}
+        mkdir ${{runner.workspace}}\build
+        cd ${{runner.workspace}}\build
+        qmake -v
+
+    - name: Build
+      shell: cmd
+      working-directory: ${{runner.workspace}}\build
+      run: |
+        set PATH=C:\%PYTHON%;${{runner.workspace}}\%QT%\bin;%PATH%
+        call "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64
+        cmake %GITHUB_WORKSPACE% ^
+        -G "Ninja" ^
+        -DCMAKE_BUILD_TYPE=Release ^
+        -DQt6_DIR="${{runner.workspace}}\$QT\lib\cmake\Qt6" ^
+        -DBUILD_SHARED_LIBS=OFF ^
+        -DCONFIG_PIC=1 ^
+        -DCMAKE_POSITION_INDEPENDENT_CODE=ON ^
+        -DCMAKE_IGNORE_PREFIX_PATH=/usr ^
+        -DCMAKE_IGNORE_PREFIX_PATH=/usr/local ^
+        -DAVIF_CODEC_AOM=SYSTEM ^
+        -DAVIF_LIBYUV=SYSTEM
+
+        ninja -j2
+
+    - uses: actions/upload-artifact@v7
+      if: contains(github.event.head_commit.message, '[deploy]') || github.event_name == 'workflow_dispatch'
+      with:
+        name: imageplugins
+        path: |
+          ${{runner.workspace}}\build\lib\qjpegxl6.dll
+          ${{runner.workspace}}\build\bin\qavif.dll
+        archive: true
+        retention-days: 5
