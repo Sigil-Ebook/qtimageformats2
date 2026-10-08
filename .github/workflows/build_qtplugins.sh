@@ -57,6 +57,8 @@ prepare_baseenv() {
   retry apt-get install -y \
     make \
     build-essential \
+    yasm \
+    perl \
     curl \
     wget \
     file \
@@ -142,7 +144,7 @@ setup_qt6() {
   export Qt6_Dir="/opt/sigiltools/Qt/${QT6_VER_FULL}/gcc_64/lib/cmake/Qt6"
   export Qt6_DIR="/opt/sigiltools/Qt/${QT6_VER_FULL}/gcc_64/lib/cmake/Qt6"
   export QT_PLUGIN_PATH="/opt/sigiltools/Qt/${QT6_VER_FULL}/gcc_64/plugins"
-  echo "Qt version $(qmake -v)"
+  # echo "Qt version $(qmake -v)"
 }
 
 build_plugins() {

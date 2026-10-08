@@ -1,4 +1,4 @@
-name: Build Sigil Qt Imageformat Plugins
+name: Build Linux Qt Imageformat Plugins
 
 on:
 
