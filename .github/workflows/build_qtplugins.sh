@@ -57,6 +57,8 @@ prepare_baseenv() {
   retry apt-get install -y \
     make \
     build-essential \
+    libgl-dev \
+    libopengl-dev \
     yasm \
     perl \
     curl \
@@ -65,6 +67,7 @@ prepare_baseenv() {
     zip \
     p7zip-full \
     zstd \
+    zlib1g-dev \
 
   apt-get autoremove --purge -y
   # strip all compiled files by default
