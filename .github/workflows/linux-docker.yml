@@ -9,6 +9,9 @@ on:
     branches: [ master ]
 
   workflow_dispatch:
+ 
+env:
+  QT6_FN: 6102
 
 jobs:
   build-plugins:  
@@ -29,6 +32,6 @@ jobs:
         if: contains(github.event.head_commit.message, '[deploy]') || startswith( github.ref, 'refs/tags/') || github.event_name == 'workflow_dispatch'
         uses: actions/upload-artifact@v7
         with:
-          name: qt6.10.2imageformats
+          name: qtimageformats${{ env.QT6_FN }}
           path: /reporoot/libq*.so
           retention-days: 7
