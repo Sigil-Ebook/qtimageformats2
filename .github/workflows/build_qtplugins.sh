@@ -165,8 +165,8 @@ build_plugins() {
     -DAVIF_CODEC_AOM=SYSTEM \
     -DAVIF_LIBYUV=SYSTEM
   ninja -j$(getconf _NPROCESSORS_ONLN)
-  cp -fv lib/libqavif.so /reporoot/libqavif.so
-  cp -fv lib/libqjpegxl6.so /reporoot/libqjpegxl6.so
+  tar -cvJf qtimageformats${QT6_FN}.tar.xz -C ./lib libqavif.so libqjpegxl6.so
+  cp -fv qtimageformats${QT6_FN}.tar.xz /reporoot/
 }
 
 time {
