@@ -35,14 +35,23 @@ No install is done, everything stays local to the build directory
 The current way to build this on Linux is with the following
 cmake commands:
 
-cmake -G "Unix Makefiles" -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=Release
-      -DCONFIG_PIC=1 -DCMAKE_POSITION_INDEPENDENT_CODE=ON
-      -DCMAKE_IGNORE_PREFIX_PATH=/usr
-      -DCMAKE_IGNORE_PREFIX_PATH=/usr/local
-      -DAVIF_CODEC_AOM=SYSTEM
-      -DAVIF_LIBYUV=SYSTEM ../qtimageformats2
+cmake -G "Unix Makefiles" \
+-DBUILD_SHARED_LIBS=OFF \
+-DCMAKE_BUILD_TYPE=Release \
+-DCONFIG_PIC=1 \
+-DCMAKE_POSITION_INDEPENDENT_CODE=ON \
+-DCMAKE_IGNORE_PREFIX_PATH=/usr \
+-DCMAKE_IGNORE_PREFIX_PATH=/usr/local \
+-DAVIF_CODEC_AOM=SYSTEM \
+-DAVIF_LIBYUV=SYSTEM ../qtimageformats2
 
 or alternative the build works with Ninja instead of Unix Makefiles as well.
+
+If the Qt6 you're building these against is not the system Qt, or is not on your path,
+you may want to add -DCMAKE_PREFIX_PATH="/Path/to/custom/qt6/gcc_64/lib/cmake" to the
+cmake configuration above (obviously adjust the path accordingly)
+
+If successful, you'll find libqavif.so and libqjpegxl6.so in the 'lib' folder of you build directory.
 
 Notice the -DCMAKE_IGNORE_PREFIX are set to exclude /usr/lib and /usr/local/lib
 to force pure static versions of all libraries and not shared versions
@@ -64,6 +73,20 @@ cmake -G "Unix Makefiles" -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=Release
 Notice the -DCMAKE_IGNORE_PREFIX_PATH=/opt/local and -DCMAKE_IGNORE_PREFIX_PATH=/usr/local
 which are used to turn off where any non-MacOS libs might have been installed
 
-For Windows:  add in perl and use Ninja as the target and keep all the pertinent
-defines from the Linux make command.
+For Windows:  If you already build Sigil on Windows, all you should need to do is make sure
+Perl is installed (I use Strawberry Perl's installer) and use Ninja as the generator (make sure Ninja.exe
+is on your Path and keep all the pertinent defines from the Linux make command. I used the following:
 
+cmake -G "Ninja" ^
+-DCMAKE_BUILD_TYPE=Release ^
+-DQt6_DIR="C:\PATH\to\custom\QT6\lib\cmake\Qt6" ^
+-DBUILD_SHARED_LIBS=OFF ^
+-DCONFIG_PIC=1 ^
+-DCMAKE_POSITION_INDEPENDENT_CODE=ON ^
+-DCMAKE_IGNORE_PREFIX_PATH=/usr ^
+-DCMAKE_IGNORE_PREFIX_PATH=/usr/local ^
+-DAVIF_CODEC_AOM=SYSTEM ^
+-DAVIF_LIBYUV=SYSTEM
+
+Build with ninja. If successful, you'll find qavif.dll in your build directory under 'lib' and 
+qjpegxl6.dll in your build directory under 'bin'.
