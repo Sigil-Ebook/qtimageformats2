@@ -47,9 +47,7 @@ cmake -G "Unix Makefiles" \
 
 or alternative the build works with Ninja instead of Unix Makefiles as well.
 
-If the Qt6 you're building these against is not the system Qt, or is not on your path,
-you may want to add -DCMAKE_PREFIX_PATH="/Path/to/custom/qt6/gcc_64/lib/cmake" to the
-cmake configuration above (obviously adjust the path accordingly)
+If the Qt6 you're building these against is not the system Qt, or is not on your path, you may want to add -DCMAKE_PREFIX_PATH="/Path/to/custom/qt6/gcc_64/lib/cmake" to the cmake configuration above (obviously adjust the path accordingly)
 
 If successful, you'll find libqavif.so and libqjpegxl6.so in the 'lib' folder of you build directory.
 
@@ -73,9 +71,7 @@ cmake -G "Unix Makefiles" -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=Release
 Notice the -DCMAKE_IGNORE_PREFIX_PATH=/opt/local and -DCMAKE_IGNORE_PREFIX_PATH=/usr/local
 which are used to turn off where any non-MacOS libs might have been installed
 
-For Windows:  If you already build Sigil on Windows, all you should need to do is make sure
-Perl is installed (I use Strawberry Perl's installer) and use Ninja as the generator (make sure Ninja.exe
-is on your Path and keep all the pertinent defines from the Linux make command. I used the following:
+For Windows:  If you already build Sigil on Windows, all you should need to do is make sure Perl is installed (I use Strawberry Perl's installer) and use Ninja as the generator (make sure Ninja.exe is on your Path) and keep all the pertinent defines from the Linux make command. I used the following:
 
 cmake -G "Ninja" ^
 -DCMAKE_BUILD_TYPE=Release ^
@@ -88,5 +84,5 @@ cmake -G "Ninja" ^
 -DAVIF_CODEC_AOM=SYSTEM ^
 -DAVIF_LIBYUV=SYSTEM
 
-Build with ninja. If successful, you'll find qavif.dll in your build directory under 'lib' and 
-qjpegxl6.dll in your build directory under 'bin'.
+Build with ninja. If successful, you'll find qavif.dll in your build directory under 'bin' and 
+qjpegxl6.dll in your build directory under 'lib'.
